@@ -6,36 +6,35 @@ import {
     placeOrderRazorpay,
     allOrders,
     userOrders,
-    updateStatus
+    updateStatus,
+    verifyStripe
 } from '../controllers/orderController.js'
 
-import authUser from '../middleware/auth.js'
 import adminAuth from '../middleware/adminAuth.js'
+import authUser from '../middleware/auth.js'
 
 const orderRouter = express.Router()
 
 
-// placing orders using cod method
+// Place order
 orderRouter.post('/place', authUser, placeOrder)
 
-
-// placing order using stripe method
+// Stripe
 orderRouter.post('/stripe', authUser, placeOrderStripe)
 
+// Verify Stripe payment
+orderRouter.post('/verifyStripe', authUser, verifyStripe)
 
-// placing orders using Razorpay Method
+// Razorpay - later
 orderRouter.post('/razorpay', authUser, placeOrderRazorpay)
 
-
-// all orders data for admin panel
+// All orders
 orderRouter.post('/list', adminAuth, allOrders)
 
-
-// user order data for frontend
+// User orders
 orderRouter.post('/userorders', authUser, userOrders)
 
-
-// update order status from admin panel
+// Update order status
 orderRouter.post('/status', adminAuth, updateStatus)
 
 

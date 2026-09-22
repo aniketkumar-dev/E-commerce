@@ -155,13 +155,9 @@ const ShopContextProvider = (props) => {
 
         try {
 
-            console.log("Backend URL:", backendUrl)
-
             const response = await axios.get(
                 backendUrl + '/api/product/list'
             )
-
-            console.log("API Response:", response.data)
 
             if (response.data.success) {
 
@@ -176,7 +172,7 @@ const ShopContextProvider = (props) => {
         } catch (error) {
 
             console.log(error)
-            toast.error(error.message)
+            // Polling ke time baar-baar toast nahi dikhayenge
 
         }
     }
@@ -207,9 +203,22 @@ const ShopContextProvider = (props) => {
     }
 
 
+    // Products first time load
     useEffect(() => {
 
         getProductsData()
+
+    }, [])
+
+
+    // 🔄 Automatically refresh products every 5 seconds
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+            getProductsData()
+        }, 5000)
+
+        return () => clearInterval(interval)
 
     }, [])
 
